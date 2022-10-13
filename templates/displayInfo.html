@@ -1,0 +1,51 @@
+<!doctype html>
+<!--
+Adapted from: https://blogs.perficient.com/2021/02/25/how-to-show-hide-html-elements-by-only-using-css/
+For showing and hiding html elements
+-->
+
+
+
+<html>
+<head>
+  <title>Vaccination Status Checker</title>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <h1>Vaccination Status Checker</h1>
+
+  <form target = '/' method = "GET" action="{{ url_for('userID_get_post') }}">
+    <p>
+      UserID <input type = "text" name="user_id"/>
+      <input type="submit">
+    </p>
+  </form>
+
+
+  <h2>Full Name</h2>
+    {% if fullName %}
+    <p>{{ fullName }}</p>
+    {% else %}
+    <p>Person not found, please enter a different id</p>
+    {% endif %}
+
+  <h2>Vaccinations</h2>
+    <label for="showVaccines">
+      Show Vaccine Information
+    </label>
+    <input type="checkbox" id="showVaccines">
+    <ul id="vaccinations">
+      {% if vaccinations|length > 0 %}
+        {% for vaccination in vaccinations %}
+          <li>{{ vaccination }}</li>
+        {% endfor %}
+      {% else %}
+      <li>No vaccinations found</li>
+      {% endif %}
+
+    </ul>
+
+</body>
+</html>
