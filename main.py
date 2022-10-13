@@ -39,6 +39,7 @@ def root():
 @app.route('/users', methods=['GET'])
 def users_get_post():
 
+    # Lists all users registered in the system
     if request.method == 'GET':
         query = datastore_client.query(kind='User')
         results = list(query.fetch())
@@ -51,7 +52,10 @@ def users_get_post():
 @app.route('/userID', methods=['GET'])
 def userID_get_post():
 
+    # GET request will collect both full name and vaccination record
     if request.method == 'GET':
+
+        # Collect and populate full name
         user_id = int(request.args.get("user_id"))
         user_key = datastore_client.key('User', user_id)
 
@@ -64,6 +68,7 @@ def userID_get_post():
         query.add_filter("UserID", "=", user_id)
         records = list(query.fetch())
 
+        # Collect and populate vaccination records
         vaccinations = []
 
         for record in records:
@@ -79,9 +84,6 @@ def userID_get_post():
 
             vaccinations.append({"Date": date, "Vaccine_Type": vaccine["Organization"]})
 
-
-        print(vaccinations)
-    
         return render_template("displayInfo.html", fullName=fullName, vaccinations=vaccinations)
 
     else:
